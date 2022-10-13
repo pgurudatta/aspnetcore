@@ -68,7 +68,8 @@ public class NamedPipeConnectionListenerTests : TestApplicationErrorLoggerLogged
         Assert.Contains(LogMessages, m => m.EventId.Name == "ConnectionListenerAborted");
     }
 
-    [Fact]
+    [ConditionalFact]
+    [OSSkipCondition(OperatingSystems.Linux | OperatingSystems.MacOSX, SkipReason = "Non-OS implementations use UDS with an unlimited accept limit.")]
     public async Task AcceptAsync_HitBacklogLimit_ClientConnectionsSuccessfullyAccepted()
     {
         // Arrange
